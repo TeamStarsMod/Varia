@@ -23,6 +23,7 @@ public final class VariaBukkit extends JavaPlugin {
         plugin = getPlugin(VariaBukkit.class);
         logger = getLogger();
         dataFolder = getDataFolder();
+        saveDefaultConfig();
 
         RunningData.init();
 
