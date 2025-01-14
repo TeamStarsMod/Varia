@@ -1,0 +1,15 @@
+#欢迎来到Varia配置文件
+
+#屏蔽词系统
+#是否开启屏蔽词系统?
+BlockWord: false
+#屏蔽词列表
+BlockWords:
+  - "example"
+  - "example2"
+#屏蔽词模式
+#在检测到屏蔽词后应替换为*还是直接取消消息发送
+#可填项Replace, Cancel
+BlockWordMode: "Replace"
+#Replace模式要替换的字符
+ReplaceWord: "*"
