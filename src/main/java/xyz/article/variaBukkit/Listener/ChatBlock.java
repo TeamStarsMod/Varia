@@ -1,6 +1,7 @@
 package xyz.article.variaBukkit.Listener;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import xyz.article.variaBukkit.RunningData;
@@ -9,7 +10,7 @@ import xyz.article.variaBukkit.VariaBukkit;
 import java.util.List;
 
 public class ChatBlock implements Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent e) {
         if (RunningData.config.getBoolean("BlockWord")) {
             String message = e.getMessage();

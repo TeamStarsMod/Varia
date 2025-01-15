@@ -2,4 +2,16 @@ name: VariaBukkit
 version: '1.0-SNAPSHOT'
 main: xyz.article.variaBukkit.VariaBukkit
 api-version: '1.20'
-authors: [ NekoEpisode ]
+authors: ["NekoEpisode"]
+
+commands:
+  VariaBukkit:
+    description: VariaBukkit主命令
+    permission: VariaBukkit.VariaBukkit
+    aliases: ["vb"]
+
+permissions:
+  VariaBukkit.VariaBukkit:
+    default: true
+  VariaBukkit.Reload:
+    default: op
