@@ -6,6 +6,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.article.variaBukkit.Commands.VariaBukkitCommand;
 import xyz.article.variaBukkit.Listener.ChatBlock;
+import xyz.article.variaBukkit.Listener.report.report;
 
 import java.io.File;
 import java.util.Objects;
@@ -34,6 +35,7 @@ public final class VariaBukkit extends JavaPlugin {
         RunningData.init();
 
         pluginManager.registerEvents(new ChatBlock(), this);
+        getCommand("report").setExecutor(new report());
 
         Objects.requireNonNull(getCommand("VariaBukkit")).setExecutor(new VariaBukkitCommand());
 
