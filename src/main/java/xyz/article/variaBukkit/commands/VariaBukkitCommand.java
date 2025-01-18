@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
-    List<String> helpList = new ArrayList<>();
+    List<String> helpList = getHelpList();
     int pageSize = 6;
 
     @Override
@@ -86,7 +86,7 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        return List.of("authors", "reload");
+        return List.of("authors", "reload", "help");
     }
 
     private void sendHelpPage(CommandSender sender, int page) {
@@ -103,5 +103,14 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(helpList.get(i));
         }
         sender.sendMessage("---- 帮助信息 第 " + page + " 页 / 共 " + totalPages + " 页 ----");
+    }
+
+    public List<String> getHelpList() {
+        List<String> list = new ArrayList<>();
+        list.add("/vb authors : 查看VariaBukkit的所有作者");
+        list.add("/vb reload : 重载配置文件");
+        list.add("/vb help : 查看帮助(你正在看的)");
+        list.add("/report <被举报者名称> <理由> : 举报一位玩家");
+        return list;
     }
 }

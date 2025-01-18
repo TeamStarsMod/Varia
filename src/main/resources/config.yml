@@ -17,3 +17,8 @@ ReplaceWord: "*"
 #举报系统
 #是否在收到新举报时显示标题提示?
 ReportTitle: true
+#预设举报理由
+ReportReasons:
+  - "作弊"
+  - "侮辱"
+  - "破坏"

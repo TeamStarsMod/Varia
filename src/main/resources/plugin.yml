@@ -10,8 +10,8 @@ commands:
     permission: VariaBukkit.VariaBukkit
     aliases: ["vb"]
   report:
-    description: Allows players to report other players.
-    usage: /report <playerName> <reason>
+    description: 举报命令
+    permission: VariaBukkit.Report
 
 
 permissions:
@@ -19,3 +19,5 @@ permissions:
     default: true
   VariaBukkit.Reload:
     default: op
+  VariaBukkit.Report:
+    default: true
