@@ -36,8 +36,8 @@ public final class VariaBukkit extends JavaPlugin {
         RunningData.init();
 
         pluginManager.registerEvents(new ChatBlock(), this);
-        getCommand("report").setExecutor(new Report());
 
+        Objects.requireNonNull(getCommand("report")).setExecutor(new Report());
         Objects.requireNonNull(getCommand("VariaBukkit")).setExecutor(new VariaBukkitCommand());
 
         logger.info(Utils.reColor(prefix + "欢迎来到VariaBukkit！"));
