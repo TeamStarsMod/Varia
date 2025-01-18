@@ -76,8 +76,14 @@ public final class VariaBukkit extends JavaPlugin {
 
             // 创建临时文件并复制新配置文件内容
             File tempFile = File.createTempFile("config", ".yml");
-            tempFile.deleteOnExit();
-            Files.copy(inputStream, Paths.get(tempFile.toURI()));
+            tempFile.deleteOnExit(); // 当JVM退出时删除临时文件
+
+            // 检查临时文件是否已经存在，如果存在则删除
+            if (tempFile.exists()) {
+                tempFile.delete();
+            }
+
+            Files.copy(inputStream, tempFile.toPath());
 
             // 加载新的配置文件
             YamlConfiguration newConfig = YamlConfiguration.loadConfiguration(tempFile);
