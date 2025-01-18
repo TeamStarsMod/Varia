@@ -2,7 +2,7 @@ name: VariaBukkit
 version: '1.0-SNAPSHOT'
 main: xyz.article.variaBukkit.VariaBukkit
 api-version: '1.20'
-authors: ["NekoEpisode"]
+authors: ["NekoEpisode", "Xiaotian1212"]
 
 commands:
   VariaBukkit:

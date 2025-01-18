@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import xyz.article.variaBukkit.Utils;
 import xyz.article.variaBukkit.methods.ReportMethods;
 
 public class Report implements CommandExecutor {
@@ -21,12 +22,12 @@ public class Report implements CommandExecutor {
                 ReportMethods.storeReport(reportingPlayer.getName(), reportedPlayerName, reportReason.toString());
                 // 尝试发送给在线的 OP
                 ReportMethods.sendReportToOnlineOp(reportingPlayer.getName(), reportedPlayerName, reportReason.toString());
-                reportingPlayer.sendMessage("举报已提交，我们会尽快处理。");
+                Utils.sendMessage(sender,"&a举报已提交！");
             } else {
-                reportingPlayer.sendMessage("使用方法：/report <玩家名称> <举报原因>");
+                Utils.sendMessage(sender, "使用方法：/report <玩家名称> <举报原因>");
             }
         } else {
-            sender.sendMessage("该命令只能由玩家使用。");
+            Utils.sendMessage(sender, "&c该命令只能由玩家使用！");
         }
         return true;
     }

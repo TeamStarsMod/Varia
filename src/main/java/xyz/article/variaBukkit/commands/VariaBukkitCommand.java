@@ -17,11 +17,12 @@ import java.util.Objects;
 
 public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
     List<String> helpList = new ArrayList<>();
+    int pageSize = 6;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (strings.length == 0) {
-            commandSender.sendMessage(Utils.reColor("&bVaria&fBukkit &7 by TeamArticle"));
+            commandSender.sendMessage(Utils.reColor("&bVaria&fBukkit &7 by TeamArticle (使用/vb authors来查看所有作者)"));
             return true;
         }
         switch (strings[0].toLowerCase()) {
@@ -56,6 +57,26 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
                 }
             }
 
+            case "help" -> {
+                if (strings.length == 1) {
+                    sendHelpPage(commandSender, 1);
+                    return true;
+                }
+                int page;
+                try {
+                    page = Integer.parseInt(strings[1]);
+                }catch (NumberFormatException e) {
+                    Utils.sendMessage(commandSender, "&c页数只能是整数！");
+                    return false;
+                }
+                if (!(page > 0)) {
+                    Utils.sendMessage(commandSender, "&c页数只能是正数！");
+                    return false;
+                }
+                sendHelpPage(commandSender, page);
+                return true;
+            }
+
             default -> {
                 Utils.sendMessage(commandSender,"&c未知的子命令！");
                 return false;
@@ -65,6 +86,22 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        return List.of("authors");
+        return List.of("authors", "reload");
+    }
+
+    private void sendHelpPage(CommandSender sender, int page) {
+        int totalPages = (int) Math.ceil((double) helpList.size() / pageSize);
+        if (page > totalPages) {
+            Utils.sendMessage(sender, "&c没有这一页！");
+            return;
+        }
+
+        int start = (page - 1) * pageSize;
+        int end = Math.min(page * pageSize, helpList.size());
+
+        for (int i = start; i < end; i++) {
+            sender.sendMessage(helpList.get(i));
+        }
+        sender.sendMessage("---- 帮助信息 第 " + page + " 页 / 共 " + totalPages + " 页 ----");
     }
 }

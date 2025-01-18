@@ -9,6 +9,6 @@ public class Utils {
     }
 
     public static void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(Utils.reColor(VariaBukkit.prefix + message));
+        sender.sendMessage(reColor(VariaBukkit.prefix + message));
     }
 }
