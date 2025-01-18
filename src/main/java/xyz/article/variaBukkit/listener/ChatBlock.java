@@ -1,4 +1,4 @@
-package xyz.article.variaBukkit.Listener;
+package xyz.article.variaBukkit.listener;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

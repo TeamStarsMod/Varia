@@ -1,4 +1,4 @@
-package xyz.article.variaBukkit.Commands;
+package xyz.article.variaBukkit.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -4,9 +4,10 @@ import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.article.variaBukkit.Commands.VariaBukkitCommand;
-import xyz.article.variaBukkit.Listener.ChatBlock;
-import xyz.article.variaBukkit.Listener.report.report;
+import xyz.article.variaBukkit.commands.VariaBukkitCommand;
+import xyz.article.variaBukkit.listener.ChatBlock;
+import xyz.article.variaBukkit.commands.report.Report;
+import xyz.article.variaBukkit.methods.ReportMethods;
 
 import java.io.File;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public final class VariaBukkit extends JavaPlugin {
         RunningData.init();
 
         pluginManager.registerEvents(new ChatBlock(), this);
-        getCommand("report").setExecutor(new report());
+        getCommand("report").setExecutor(new Report());
 
         Objects.requireNonNull(getCommand("VariaBukkit")).setExecutor(new VariaBukkitCommand());
 
@@ -46,5 +47,7 @@ public final class VariaBukkit extends JavaPlugin {
     @Override
     public void onDisable() {
         logger.info(prefix + "VariaBukkit正在关闭！");
+
+        ReportMethods.onDisable();
     }
 }
