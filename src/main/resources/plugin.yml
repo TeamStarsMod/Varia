@@ -1,6 +1,6 @@
 name: VariaBukkit
 version: '1.0-SNAPSHOT'
-main: xyz.article.variaBukkit.VariaBukkit
+main: xyz.article.varia.bukkit.VariaBukkit
 api-version: '1.20'
 authors: ["NekoEpisode", "Xiaotian1212"]
 
@@ -9,15 +9,17 @@ commands:
     description: VariaBukkit主命令
     permission: VariaBukkit.VariaBukkit
     aliases: ["vb"]
-  report:
+  Report:
     description: 举报命令
     permission: VariaBukkit.Report
+  Time:
+    description: 修改时间
 
 
 permissions:
-  VariaBukkit.VariaBukkit:
+  Varia.VariaBukkit:
     default: true
-  VariaBukkit.Reload:
+  Varia.Reload:
     default: op
-  VariaBukkit.Report:
+  Varia.Report:
     default: true

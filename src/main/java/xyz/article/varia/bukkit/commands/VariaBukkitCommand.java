@@ -1,13 +1,13 @@
-package xyz.article.variaBukkit.commands;
+package xyz.article.varia.bukkit.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.YamlConfiguration;
-import xyz.article.variaBukkit.RunningData;
-import xyz.article.variaBukkit.Utils;
-import xyz.article.variaBukkit.VariaBukkit;
+import xyz.article.varia.bukkit.RunningDataBukkit;
+import xyz.article.varia.bukkit.BukkitUtils;
+import xyz.article.varia.bukkit.VariaBukkit;
 
 import java.io.File;
 import java.io.InputStreamReader;
@@ -22,7 +22,7 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (strings.length == 0) {
-            commandSender.sendMessage(Utils.reColor("&bVaria&fBukkit &7 by TeamArticle (使用/vb authors来查看所有作者)"));
+            commandSender.sendMessage(BukkitUtils.reColor("&bVaria&fBukkit &7by TeamArticle (使用/vb authors来查看所有作者)"));
             return true;
         }
         switch (strings[0].toLowerCase()) {
@@ -35,10 +35,10 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
                                 )
                         )
                 ).getStringList("authors");
-                Utils.sendMessage(commandSender, "全部作者：");
+                BukkitUtils.sendMessageWithPrefix(commandSender, "全部作者：");
                 for (String author : authorsList) {
                     if (author.equalsIgnoreCase("NekoEpisode")) {
-                        commandSender.sendMessage(Utils.reColor("&6NekoEpisode"));
+                        commandSender.sendMessage(BukkitUtils.reColor("&6NekoEpisode"));
                     }else {
                         commandSender.sendMessage(author);
                     }
@@ -48,11 +48,11 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
 
             case "reload" -> {
                 if (commandSender.hasPermission("VariaBukkit.Reload")) {
-                    RunningData.config = YamlConfiguration.loadConfiguration(new File(VariaBukkit.dataFolder + "config.yml"));
-                    Utils.sendMessage(commandSender, "&a配置文件重载完成！");
+                    RunningDataBukkit.config = YamlConfiguration.loadConfiguration(new File(VariaBukkit.dataFolder, "bukkit/config.yml"));
+                    BukkitUtils.sendMessageWithPrefix(commandSender, "&a配置文件重载完成！");
                     return true;
                 }else {
-                    Utils.sendMessage(commandSender, "&c需要权限：&eVariaBukkit.Reload");
+                    BukkitUtils.sendMessageWithPrefix(commandSender, "&c需要权限：&eVariaBukkit.Reload");
                     return false;
                 }
             }
@@ -66,11 +66,11 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
                 try {
                     page = Integer.parseInt(strings[1]);
                 }catch (NumberFormatException e) {
-                    Utils.sendMessage(commandSender, "&c页数只能是整数！");
+                    BukkitUtils.sendMessageWithPrefix(commandSender, "&c页数只能是整数！");
                     return false;
                 }
                 if (!(page > 0)) {
-                    Utils.sendMessage(commandSender, "&c页数只能是正数！");
+                    BukkitUtils.sendMessageWithPrefix(commandSender, "&c页数只能是正数！");
                     return false;
                 }
                 sendHelpPage(commandSender, page);
@@ -78,7 +78,7 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
             }
 
             default -> {
-                Utils.sendMessage(commandSender,"&c未知的子命令！");
+                BukkitUtils.sendMessageWithPrefix(commandSender,"&c未知的子命令！");
                 return false;
             }
         }
@@ -92,7 +92,7 @@ public class VariaBukkitCommand implements CommandExecutor, TabCompleter {
     private void sendHelpPage(CommandSender sender, int page) {
         int totalPages = (int) Math.ceil((double) helpList.size() / pageSize);
         if (page > totalPages) {
-            Utils.sendMessage(sender, "&c没有这一页！");
+            BukkitUtils.sendMessageWithPrefix(sender, "&c没有这一页！");
             return;
         }
 

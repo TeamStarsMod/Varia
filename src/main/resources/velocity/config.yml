@@ -1,0 +1,26 @@
+#欢迎来到VariaVelocity配置文件
+
+#连接提示系统
+#此系统可以帮助您在玩家连接到代理以及退出代理和切换子服务器时向其他代理中的玩家发送信息
+#玩家加入提示开关
+PlayerJoinProxyPrompt: false
+#玩家加入提示内容，您可以使用占位符%player%来代表玩家的名称，也可以使用&来自定义颜色 (此消息会被自动添加前缀)
+PlayerJoinProxyPromptContent: "玩家 %player% 加入了代理服务器"
+#玩家退出提示开关
+PlayerLeaveProxyPrompt: false
+#玩家退出提示内容，可用占位符同上
+PlayerLeaveProxyPromptContent: "玩家 %player% 退出了代理服务器"
+#玩家切换子服务器提示开关
+PlayerSwitchServerPrompt: false
+#玩家切换子服务器提示内容，可用占位符为%player%和%server%(显示玩家转移到的服务器名称)
+PlayerSwitchServerPromptContent: "玩家 %player% 切换到了子服务器 %server%"
+
+#回城系统
+#此系统可以帮助您输入/hub快速回到指定服务器
+#开关
+HubSystem: false
+#服务器名称
+HubServerName: "Lobby"
+#您可以选择禁止在某些服务器中使用回城系统
+HubBlackList:
+  - "Login"

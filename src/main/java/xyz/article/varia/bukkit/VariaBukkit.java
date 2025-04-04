@@ -1,26 +1,22 @@
-package xyz.article.variaBukkit;
+package xyz.article.varia.bukkit;
 
 import org.bukkit.Server;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.article.variaBukkit.commands.VariaBukkitCommand;
-import xyz.article.variaBukkit.listener.ChatBlock;
-import xyz.article.variaBukkit.commands.report.Report;
-import xyz.article.variaBukkit.methods.ReportMethods;
+import xyz.article.varia.bukkit.commands.BukkitCommandRegister;
+import xyz.article.varia.bukkit.listener.BukkitListenerRegister;
+import xyz.article.varia.bukkit.methods.ReportMethods;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
 
 public final class VariaBukkit extends JavaPlugin {
     public static PluginManager pluginManager;
     public static Server server;
-    public static Plugin plugin;
+    public static JavaPlugin plugin;
     public static Logger logger;
     public static File dataFolder;
 
@@ -32,10 +28,22 @@ public final class VariaBukkit extends JavaPlugin {
 
         pluginManager = getServer().getPluginManager();
         server = getServer();
-        plugin = getPlugin(VariaBukkit.class);
+        plugin = this;
         logger = getLogger();
         dataFolder = getDataFolder();
-        saveDefaultConfig();
+
+        if (dataFolder.mkdirs()) logger.info("已创建数据文件夹");
+
+        try (InputStream inputStream = getClassLoader().getResourceAsStream("bukkit/config.yml")) {
+            if (inputStream != null) {
+                File configFile = new File(dataFolder, "config.yml");
+                if (!configFile.exists()) {
+                    Files.copy(inputStream, configFile.toPath());
+                }
+            } else logger.severe("内部配置文件不存在！这可能会导致很严重的问题！");
+        } catch (IOException e) {
+            logger.severe("在插件复制配置文件时出现了错误！" + e);
+        }
 
         logger.info("正在检查/更新您的配置文件，请稍后...");
         if (updateConfig())
@@ -43,17 +51,15 @@ public final class VariaBukkit extends JavaPlugin {
         else
             logger.warning("在检查您的配置文件时出现了些许问题");
 
-        RunningData.init();
+        RunningDataBukkit.config = YamlConfiguration.loadConfiguration(new File(dataFolder, "config.yml"));
 
-        pluginManager.registerEvents(new ChatBlock(), this);
+        BukkitListenerRegister.registerListeners(pluginManager, plugin);
 
-        Objects.requireNonNull(getCommand("Report")).setExecutor(new Report());
-        Objects.requireNonNull(getCommand("VariaBukkit")).setExecutor(new VariaBukkitCommand());
+        BukkitCommandRegister.registerCommands(plugin);
+        BukkitCommandRegister.registerTabCompleters(plugin);
 
-        Objects.requireNonNull(getCommand("Report")).setTabCompleter(new Report());
-
-        logger.info(Utils.reColor(prefix + "欢迎来到VariaBukkit！"));
-        logger.info(Utils.reColor(prefix + "加载耗时：" + (System.currentTimeMillis() - startTime) + "ms"));
+        logger.info(BukkitUtils.reColor(prefix + "欢迎来到VariaBukkit！"));
+        logger.info(BukkitUtils.reColor(prefix + "加载耗时：" + (System.currentTimeMillis() - startTime) + "ms"));
     }
 
     @Override
@@ -69,7 +75,7 @@ public final class VariaBukkit extends JavaPlugin {
             YamlConfiguration oldConfig = YamlConfiguration.loadConfiguration(new File(dataFolder, "config.yml"));
 
             // 获取新的配置文件流
-            InputStream inputStream = getClassLoader().getResourceAsStream("config.yml");
+            InputStream inputStream = getClassLoader().getResourceAsStream("bukkit/config.yml");
             if (inputStream == null) {
                 return false;
             }
