@@ -1,5 +1,10 @@
 #欢迎来到VariaVelocity配置文件
 
+#命令开关，如果设为关，则这些命令不会被注册
+#如果您有另一个插件的命令与Varia的冲突，您可以将其设为false
+#部分命令的开关在功能配置中
+AlertCommand: true
+
 #连接提示系统
 #此系统可以帮助您在玩家连接到代理以及退出代理和切换子服务器时向其他代理中的玩家发送信息
 #玩家加入提示开关
@@ -24,3 +29,14 @@ HubServerName: "Lobby"
 #您可以选择禁止在某些服务器中使用回城系统
 HubBlackList:
   - "Login"
+
+#全服喊话系统
+#此系统可以让您在全服发送消息
+#开关 (需重启服务器)
+AllServerChat: false
+#命令
+AllServerChatCommand: "allchat"
+#消息格式，可使用%player%，%message%和%server%
+AllServerChatFormat: "&7[&a全服&7]&r %player% &8»&r %message%"
+#在哪些服务器的玩家收不到全服消息且无法发送全服消息?
+AllServerChatBlackList: []

@@ -18,6 +18,10 @@ public class AlertCommand implements RawCommand {
 
     @Override
     public void execute(Invocation invocation) {
+        if (invocation.arguments().isEmpty()) {
+            VelocityUtils.sendMessageWithPrefix(invocation.source(), "&c请输入要发送的消息！");
+            return;
+        }
         for (Player player : server.getAllPlayers()) {
             player.sendPlainMessage(VelocityUtils.reColor("&f[&cAlert&f] &4" + invocation.arguments()));
         }

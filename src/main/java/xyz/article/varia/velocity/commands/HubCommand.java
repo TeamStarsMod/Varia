@@ -6,23 +6,19 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-import org.yaml.snakeyaml.Yaml;
 import xyz.article.varia.velocity.VelocityUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import static xyz.article.varia.velocity.RunningDataVelocity.config;
+
 public class HubCommand implements SimpleCommand {
-    private final File configFile;
     private final Logger logger;
     private final ProxyServer server;
 
-    public HubCommand(File configFile, Logger logger, ProxyServer server) {
-        this.configFile = configFile;
+    public HubCommand(Logger logger, ProxyServer server) {
         this.logger = logger;
         this.server = server;
     }
@@ -36,29 +32,10 @@ public class HubCommand implements SimpleCommand {
             return;
         }
 
-        if (!configFile.exists()) {
-            logger.warning("配置文件不存在，这可能是个错误！");
-            return;
-        }
-
-        Yaml yaml = new Yaml();
-        Map<String, Object> configMap;
-        try {
-            configMap = yaml.load(new FileInputStream(configFile));
-        } catch (Exception e) {
-            logger.warning("读取配置文件时出现了错误！" + e);
-            return;
-        }
-
-        if (!((boolean) configMap.get("HubSystem"))) {
-            VelocityUtils.sendMessageWithPrefix(source, "&c此服务器未启用Hub系统！");
-            return;
-        }
-
-        String hubServerName = (String) configMap.get("HubServerName");
+        String hubServerName = (String) config.get("HubServerName");
         Optional<ServerConnection> playerNowServer = player.getCurrentServer();
         if (playerNowServer.isPresent()) {
-            if (((ArrayList<String>) configMap.get("HubBlackList")).contains(playerNowServer.get().getServerInfo().getName())) {
+            if (((ArrayList<String>) config.get("HubBlackList")).contains(playerNowServer.get().getServerInfo().getName())) {
                 VelocityUtils.sendMessageWithPrefix(source, "&c您当前所在的服务器已在黑名单中，无法使用此命令！");
                 return;
             }
