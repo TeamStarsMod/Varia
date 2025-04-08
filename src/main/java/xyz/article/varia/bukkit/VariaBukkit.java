@@ -40,6 +40,9 @@ public final class VariaBukkit extends JavaPlugin {
                 if (!configFile.exists()) {
                     Files.copy(inputStream, configFile.toPath());
                 }
+                File defaultConfigFile = new File(dataFolder, "default_config.yml");
+                defaultConfigFile.delete();
+                Files.copy(inputStream, defaultConfigFile.toPath());
             } else logger.severe("内部配置文件不存在！这可能会导致很严重的问题！");
         } catch (IOException e) {
             logger.severe("在插件复制配置文件时出现了错误！" + e);

@@ -16,6 +16,7 @@ import xyz.article.varia.velocity.commands.VariaVelocityCommand;
 import xyz.article.varia.velocity.listener.connectionEvents.PlayerJoinProxyEvent;
 import xyz.article.varia.velocity.listener.connectionEvents.PlayerLeaveProxyEvent;
 import xyz.article.varia.velocity.listener.connectionEvents.PlayerSwitchServerEvent;
+import xyz.article.varia.velocity.listener.connectionEvents.ProxyPingEvent;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -32,7 +33,7 @@ public class VariaVelocity {
     private final Path dataDirectory;
     private File configFile;
 
-    public static String prefix = "&bVaria&fVelocity &7>> ";
+    public static String PREFIX = "&bVaria&fVelocity &7>> ";
 
     @Inject
     public VariaVelocity(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
@@ -54,13 +55,16 @@ public class VariaVelocity {
                 if (!configFile.exists()) {
                     Files.copy(inputStream, configFile.toPath());
                 }
+                File defaultConfigFile = new File(dataDirectory.toFile(), "default_config.yml");
+                defaultConfigFile.delete();
+                Files.copy(inputStream, defaultConfigFile.toPath());
             } else logger.error("内部配置文件不存在！这可能会导致很严重的问题！");
         } catch (IOException e) {
             logger.error("在插件复制配置文件时出现了错误！", e);
         }
 
         logger.info("正在检查/更新您的配置文件，请稍后...");
-        if (updateConfig())
+        if (updateConfig(dataDirectory, logger))
             logger.info("配置文件检查/更新完成");
         else
             logger.warn("在检查您的配置文件时出现了些许问题");
@@ -76,13 +80,14 @@ public class VariaVelocity {
         server.getEventManager().register(this, new PlayerJoinProxyEvent(server));
         server.getEventManager().register(this, new PlayerLeaveProxyEvent(server));
         server.getEventManager().register(this, new PlayerSwitchServerEvent(server));
+        server.getEventManager().register(this, new ProxyPingEvent(server));
 
         // 注册主命令
         CommandMeta commandMeta = server.getCommandManager().metaBuilder("variavelocity")
                 .aliases("vv")
                 .plugin(this)
                 .build();
-        server.getCommandManager().register(commandMeta, new VariaVelocityCommand());
+        server.getCommandManager().register(commandMeta, new VariaVelocityCommand(dataDirectory, logger));
 
         // 注册Alert命令
         if ((boolean) config.get("AlertCommand")) {
@@ -94,7 +99,7 @@ public class VariaVelocity {
 
         // 注册Hub命令
         if ((boolean) config.get("HubSystem")) {
-            CommandMeta hubCommandMeta = server.getCommandManager().metaBuilder("hub")
+            CommandMeta hubCommandMeta = server.getCommandManager().metaBuilder((String) config.get("HubCommand"))
                     .plugin(this)
                     .build();
             server.getCommandManager().register(hubCommandMeta, new HubCommand(logger, server));
@@ -109,7 +114,7 @@ public class VariaVelocity {
         }
     }
 
-    public boolean updateConfig() {
+    public static boolean updateConfig(Path dataDirectory, Logger logger) {
         try {
             // 加载旧的配置文件
             Yaml yaml = new Yaml();
@@ -126,7 +131,7 @@ public class VariaVelocity {
             }
 
             // 获取新的配置文件流
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("velocity/config.yml");
+            InputStream inputStream = VariaVelocity.class.getClassLoader().getResourceAsStream("velocity/config.yml");
             if (inputStream == null) {
                 return false;
             }
@@ -152,7 +157,7 @@ public class VariaVelocity {
     }
 
     // 递归合并两个配置Map
-    private void mergeConfigs(Map<String, Object> oldConfig, Map<String, Object> newConfig) {
+    private static void mergeConfigs(Map<String, Object> oldConfig, Map<String, Object> newConfig) {
         for (Map.Entry<String, Object> entry : newConfig.entrySet()) {
             String key = entry.getKey();
             Object newValue = entry.getValue();

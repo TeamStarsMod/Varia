@@ -1,4 +1,7 @@
 #欢迎来到VariaVelocity配置文件
+#所有系统开关均需要重启代理才能生效 (个别除外)
+#如果您当前进入的是default_config.yml，那么请转到config.yml，因为您在这里的修改不会被读取且会被覆盖
+#default_config.yml是为了防止配置文件自动更新后丢失注释的，如果您在更新后找不到注释，可以尝试查看default_config.yml来对照
 
 #命令开关，如果设为关，则这些命令不会被注册
 #如果您有另一个插件的命令与Varia的冲突，您可以将其设为false
@@ -21,18 +24,21 @@ PlayerSwitchServerPrompt: false
 PlayerSwitchServerPromptContent: "玩家 %player% 切换到了子服务器 %server%"
 
 #回城系统
-#此系统可以帮助您输入/hub快速回到指定服务器
+#此系统可以帮助您输入指定命令快速回到指定服务器中
 #开关
 HubSystem: false
-#服务器名称
+#命令
+HubCommand: "hub"
+#要回到的服务器名称
 HubServerName: "Lobby"
 #您可以选择禁止在某些服务器中使用回城系统
+#一般来讲，您应该禁用所有的登录服，来防止玩家跳过登录
 HubBlackList:
   - "Login"
 
 #全服喊话系统
-#此系统可以让您在全服发送消息
-#开关 (需重启服务器)
+#此系统可以让您在全代理发送消息
+#开关
 AllServerChat: false
 #命令
 AllServerChatCommand: "allchat"
@@ -40,3 +46,27 @@ AllServerChatCommand: "allchat"
 AllServerChatFormat: "&7[&a全服&7]&r %player% &8»&r %message%"
 #在哪些服务器的玩家收不到全服消息且无法发送全服消息?
 AllServerChatBlackList: []
+
+#Motd修改系统
+#此系统可以让您修改代理的Motd
+MotdSystem: false #开关
+MotdVersion: null #修改版本不匹配时显示的服务器版本信息 (如Velocity xxx), 如果您想要保留原样，可以设为null
+MotdSample: true #是否修改Sample(将鼠标悬浮在服务器人数上显示的信息)
+RealSample: true #是否显示真实Sample(显示当前服务器内玩家)
+MaxSampleLength: -1 #最大Sample长度，决定可以显示多少个玩家在列表上，仅在RealSample为true时生效，设置为负数取消限制，取消限制可能会导致在人多的情况下性能消耗过大
+ForceShowPlayers: false #是否无视玩家的服务器列表显示设置，强制显示在玩家列表上，仅在RealSample为true时生效
+#自定义Sample，仅在RealSample为false时生效，可使用&自定义颜色
+#一共有两种方式，一种是直接把CustomSample设置为一个列表，这样会直接替换Sample为这个列表，就像下面这样
+CustomSample:
+  - "&a&lWelcome to Varia!"
+  - "&e&lThis is a custom sample!"
+#也有另一种方式，如果你在CustomSample下方设置了多个子项，则Varia会在每次请求时随机返回这些Sample中随机一个
+#就像这样
+#CustomSample:
+#  Sample1:
+#    - "&e这是第一个"
+#    - "&a自定义Sample!"
+#  Sample2:
+#    - "&c这是第二个"
+#    - "&f自定义Sample!"
+MotdDescription: "这是一个自定义\nMotdDescription!" #Description(服务器描述)显示的内容，可使用&自定义颜色，设为null保持原样，可使用\n换行

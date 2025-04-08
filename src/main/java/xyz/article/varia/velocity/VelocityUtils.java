@@ -20,6 +20,6 @@ public class VelocityUtils {
     }
 
     public static void sendMessageWithPrefix(CommandSource sender, String message) {
-        sender.sendPlainMessage(reColor(VariaVelocity.prefix + message));
+        sender.sendPlainMessage(reColor(VariaVelocity.PREFIX + message));
     }
 }

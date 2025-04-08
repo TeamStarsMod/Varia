@@ -26,7 +26,7 @@ public class PlayerSwitchServerEvent {
             String message = (String) config.get("PlayerSwitchServerPromptContent");
             if (message != null) {
                 for (Player player1 : server.getAllPlayers()) {
-                    player1.sendPlainMessage(VelocityUtils.reColor(VariaVelocity.prefix + message.replace("%player%", player.getUsername().replace("%server%", serverInfo.getName()))));
+                    player1.sendPlainMessage(VelocityUtils.reColor(VariaVelocity.PREFIX + message.replace("%player%", player.getUsername().replace("%server%", serverInfo.getName()))));
                 }
             }
         }
