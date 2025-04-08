@@ -7,6 +7,7 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import xyz.article.varia.velocity.commands.AlertCommand;
 import xyz.article.varia.velocity.commands.AllServerChatCommand;
@@ -21,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import static xyz.article.varia.velocity.RunningDataVelocity.config;
 
@@ -54,22 +54,22 @@ public class VariaVelocity {
                 if (!configFile.exists()) {
                     Files.copy(inputStream, configFile.toPath());
                 }
-            } else logger.severe("内部配置文件不存在！这可能会导致很严重的问题！");
+            } else logger.error("内部配置文件不存在！这可能会导致很严重的问题！");
         } catch (IOException e) {
-            logger.severe("在插件复制配置文件时出现了错误！" + e);
+            logger.error("在插件复制配置文件时出现了错误！", e);
         }
 
         logger.info("正在检查/更新您的配置文件，请稍后...");
         if (updateConfig())
             logger.info("配置文件检查/更新完成");
         else
-            logger.warning("在检查您的配置文件时出现了些许问题");
+            logger.warn("在检查您的配置文件时出现了些许问题");
 
         Yaml yaml = new Yaml();
         try {
             config = yaml.load(new FileInputStream(configFile));
         } catch (IOException e) {
-            logger.severe("读取配置文件时出现了错误！" + e);
+            logger.error("读取配置文件时出现了错误！", e);
         }
 
         // 注册监听器
@@ -146,7 +146,7 @@ public class VariaVelocity {
             }
             return true;
         } catch (IOException e) {
-            logger.severe("发生错误！" + e);
+            logger.error("发生错误！", e);
             return false;
         }
     }

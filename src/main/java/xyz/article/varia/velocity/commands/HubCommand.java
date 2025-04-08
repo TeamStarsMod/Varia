@@ -6,11 +6,11 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import org.slf4j.Logger;
 import xyz.article.varia.velocity.VelocityUtils;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import static xyz.article.varia.velocity.RunningDataVelocity.config;
 
@@ -40,7 +40,7 @@ public class HubCommand implements SimpleCommand {
                 return;
             }
         } else {
-            logger.warning("玩家 " + player.getUsername() + " 未连接到任何服务器！");
+            logger.warn("玩家 {} 未连接到任何服务器！", player.getUsername());
             VelocityUtils.sendMessageWithPrefix(source, "&c抱歉，出现了些问题，您暂时不可以使用此命令");
             return;
         }

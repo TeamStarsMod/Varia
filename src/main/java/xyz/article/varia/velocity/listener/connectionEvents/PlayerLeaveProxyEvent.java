@@ -9,7 +9,6 @@ import xyz.article.varia.velocity.VelocityUtils;
 
 import static xyz.article.varia.velocity.RunningDataVelocity.config;
 
-
 public class PlayerLeaveProxyEvent {
     private final ProxyServer server;
 

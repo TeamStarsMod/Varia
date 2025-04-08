@@ -4,10 +4,10 @@ import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import org.slf4j.Logger;
 import xyz.article.varia.velocity.VelocityUtils;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import static xyz.article.varia.velocity.RunningDataVelocity.config;
 
@@ -44,7 +44,7 @@ public class AllServerChatCommand implements RawCommand {
         String message = (String) config.get("AllServerChatFormat");
         if (message == null) {
             message = "&7[&a全服&7]&r %player% &8»&r %message%";
-            logger.warning("全服聊天格式未配置，已使用默认格式");
+            logger.warn("全服聊天格式未配置，已使用默认格式");
         }
 
         message = message

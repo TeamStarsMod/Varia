@@ -3,9 +3,8 @@ package xyz.article.varia.velocity.commands;
 import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import org.slf4j.Logger;
 import xyz.article.varia.velocity.VelocityUtils;
-
-import java.util.logging.Logger;
 
 public class AlertCommand implements RawCommand {
     private final ProxyServer server;
