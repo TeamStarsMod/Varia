@@ -4,6 +4,7 @@ import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.slf4j.Logger;
 import xyz.article.varia.velocity.VelocityUtils;
 
@@ -47,9 +48,19 @@ public class AllServerChatCommand implements RawCommand {
             logger.warn("全服聊天格式未配置，已使用默认格式");
         }
 
+        String playerMessage;
+        if ((boolean) config.get("AllServerChatDisableMiniMessage")) {
+            if (invocation.source().hasPermission("varia.useMiniMessage"))
+                playerMessage = invocation.arguments();
+            else
+                playerMessage = MiniMessage.miniMessage().escapeTags(invocation.arguments());
+        } else {
+            playerMessage = invocation.arguments();
+        }
+
         message = message
                 .replace("%player%", player.getUsername())
-                .replace("%message%", invocation.arguments())
+                .replace("%message%", playerMessage)
                 .replace("%server%", (player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo().getName() : "Unknown"));
 
         for (RegisteredServer server : proxyServer.getAllServers()) {

@@ -50,6 +50,9 @@ AllServerChatCommand: "allchat"
 AllServerChatFormat: "<yellow>[</yellow><gold>全服</gold><yellow>] %player%</yellow> <gold>»</gold><white> %message%</white>"
 #在哪些服务器的玩家收不到全服消息且无法发送全服消息?
 AllServerChatBlackList: []
+#你可以不允许玩家使用MiniMessage，如果关闭后果自负，玩家可能会使用MiniMessage制作诈骗或引导信息
+#可使用varia.useMiniMessage权限绕过此限制
+AllServerChatDisableMiniMessage: true
 
 #Motd修改系统
 #此系统可以让您修改代理的Motd
