@@ -49,13 +49,13 @@ public class VariaVelocityCommand implements SimpleCommand {
                             File configFile = new File(dataDirectory.toFile(), "config.yml");
                             config = yaml.load(new FileInputStream(configFile));
                         } catch (IOException e) {
-                            VelocityUtils.sendMessageWithPrefix(invocation.source(), "&c重载失败！查看你的控制台！");
+                            VelocityUtils.sendMessageWithPrefix(invocation.source(), "<red>重载失败！查看你的控制台！</red>");
                             logger.error("在插件重载配置文件时出现了错误！", e);
                         }
-                        VelocityUtils.sendMessageWithPrefix(invocation.source(), "&a重载完成！");
-                        VelocityUtils.sendMessageWithPrefix(invocation.source(), "&e某些设置可能需要重启代理生效");
+                        VelocityUtils.sendMessageWithPrefix(invocation.source(), "<green>重载完成！</green>");
+                        VelocityUtils.sendMessageWithPrefix(invocation.source(), "<yellow>某些设置可能需要重启代理生效</yellow>");
                     }else {
-                        VelocityUtils.sendMessageWithPrefix(invocation.source(), "&c需要权限：&evaria.reload");
+                        VelocityUtils.sendMessageWithPrefix(invocation.source(), "<red>需要权限：</red><yellow>varia.reload</yellow>");
                     }
                 }
             }

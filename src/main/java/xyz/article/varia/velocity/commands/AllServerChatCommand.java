@@ -24,26 +24,26 @@ public class AllServerChatCommand implements RawCommand {
     @SuppressWarnings("unchecked")
     public void execute(Invocation invocation) {
         if (!(invocation.source() instanceof Player player)) {
-            VelocityUtils.sendMessageWithPrefix(invocation.source(), "&c玩家才能使用此命令！");
+            VelocityUtils.sendMessageWithPrefix(invocation.source(), "<red>玩家才能使用此命令！</red>");
             return;
         }
 
         List<String> blackList = (List<String>) config.get("AllServerChatBlackList");
         if (player.getCurrentServer().isPresent()) {
             if (blackList.contains(player.getCurrentServer().get().getServerInfo().getName())) {
-                VelocityUtils.sendMessageWithPrefix(invocation.source(), "&c抱歉，您不能在此服务器使用全服聊天！");
+                VelocityUtils.sendMessageWithPrefix(invocation.source(), "<red>抱歉，您不能在此服务器使用全服聊天！</red>");
                 return;
             }
         }
 
         if (invocation.arguments().isEmpty()) {
-            VelocityUtils.sendMessageWithPrefix(invocation.source(), "&c请输入要发送的消息！");
+            VelocityUtils.sendMessageWithPrefix(invocation.source(), "<red>请输入要发送的消息！</red>");
             return;
         }
 
         String message = (String) config.get("AllServerChatFormat");
         if (message == null) {
-            message = "&7[&a全服&7]&r %player% &8»&r %message%";
+            message = "<yellow>[</yellow><gold>全服</gold><yellow>] %player%</yellow> <gold>»</gold><white> %message%</white>";
             logger.warn("全服聊天格式未配置，已使用默认格式");
         }
 
@@ -58,11 +58,11 @@ public class AllServerChatCommand implements RawCommand {
             }
 
             for (Player player1 : server.getPlayersConnected()) {
-                player1.sendPlainMessage(VelocityUtils.reColor(message));
+                player1.sendMessage(VelocityUtils.reColorMiniMessage(message));
             }
         }
 
-        logger.info(VelocityUtils.reColor(message));
+        proxyServer.getConsoleCommandSource().sendMessage(VelocityUtils.reColorMiniMessage(message));
     }
 
     @Override

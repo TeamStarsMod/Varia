@@ -1,6 +1,8 @@
 package xyz.article.varia.velocity;
 
 import com.velocitypowered.api.command.CommandSource;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class VelocityUtils {
     public static String reColor(char altColorChar, String textToTranslate) {
@@ -15,11 +17,14 @@ public class VelocityUtils {
 
         return new String(b);
     }
-    public static String reColor(String textToTranslate) {
+    public static Component reColorMiniMessage(String textToTranslate) {
+        return MiniMessage.miniMessage().deserialize(textToTranslate);
+    }
+    public static String reColorPlain(String textToTranslate) {
         return reColor('&', textToTranslate);
     }
 
     public static void sendMessageWithPrefix(CommandSource sender, String message) {
-        sender.sendPlainMessage(reColor(VariaVelocity.PREFIX + message));
+        sender.sendMessage(reColorMiniMessage(VariaVelocity.PREFIX + message));
     }
 }

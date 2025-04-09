@@ -24,7 +24,7 @@ public class PlayerLeaveProxyEvent {
             String message = (String) config.get("PlayerLeaveProxyPromptContent");
             if (message != null) {
                 for (Player player1 : server.getAllPlayers()) {
-                    player1.sendPlainMessage(VelocityUtils.reColor(VariaVelocity.PREFIX + message.replace("%player%", player.getUsername())));
+                    player1.sendMessage(VelocityUtils.reColorMiniMessage(VariaVelocity.PREFIX + message.replace("%player%", player.getUsername())));
                 }
             }
         }

@@ -5,6 +5,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.ServerPing;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import xyz.article.varia.velocity.VelocityUtils;
 
@@ -54,7 +55,7 @@ public class ProxyPingEvent {
 
                 for (String sample : finalSampleList) {
                     samplePlayerList.add(new ServerPing.SamplePlayer(
-                            VelocityUtils.reColor(sample),
+                            VelocityUtils.reColorPlain(sample),
                             UUID.randomUUID()
                     ));
                 }
@@ -70,7 +71,7 @@ public class ProxyPingEvent {
         }
 
         if (config.get("MotdDescription") != null) {
-            description = Component.text(VelocityUtils.reColor((String) config.get("MotdDescription")));
+            description = VelocityUtils.reColorMiniMessage((String) config.get("MotdDescription"));
         } else {
             description = event.getPing().getDescriptionComponent();
         }
@@ -92,12 +93,9 @@ public class ProxyPingEvent {
         if (customSampleObj instanceof Map) {
             Map<String, List<String>> sampleMap = (Map<String, List<String>>) customSampleObj;
             Random random = new Random();
-
-            for (List<String> subList : sampleMap.values()) {
-                if (!subList.isEmpty()) {
-                    String randomSample = subList.get(random.nextInt(subList.size()));
-                    finalSampleList.add(randomSample);
-                }
+            String randomKey = sampleMap.keySet().stream().skip(random.nextInt(sampleMap.size())).findFirst().orElse(null);
+            if (randomKey != null && sampleMap.get(randomKey) != null) {
+                finalSampleList = sampleMap.get(randomKey);
             }
         } else if (customSampleObj instanceof List) {
             finalSampleList = (List<String>) customSampleObj;

@@ -28,7 +28,7 @@ public class HubCommand implements SimpleCommand {
     public void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         if (!(source instanceof Player player)) {
-            VelocityUtils.sendMessageWithPrefix(source, "&c玩家才能使用此命令！");
+            VelocityUtils.sendMessageWithPrefix(source, "<red>玩家才能使用此命令！</red>");
             return;
         }
 
@@ -36,12 +36,12 @@ public class HubCommand implements SimpleCommand {
         Optional<ServerConnection> playerNowServer = player.getCurrentServer();
         if (playerNowServer.isPresent()) {
             if (((ArrayList<String>) config.get("HubBlackList")).contains(playerNowServer.get().getServerInfo().getName())) {
-                VelocityUtils.sendMessageWithPrefix(source, "&c您当前所在的服务器已在黑名单中，无法使用此命令！");
+                VelocityUtils.sendMessageWithPrefix(source, "<red>您当前所在的服务器已在黑名单中，无法使用此命令！</red>");
                 return;
             }
         } else {
             logger.warn("玩家 {} 未连接到任何服务器！", player.getUsername());
-            VelocityUtils.sendMessageWithPrefix(source, "&c抱歉，出现了些问题，您暂时不可以使用此命令");
+            VelocityUtils.sendMessageWithPrefix(source, "<red>抱歉，出现了些问题，您暂时不可以使用此命令</red>");
             return;
         }
 
@@ -53,11 +53,11 @@ public class HubCommand implements SimpleCommand {
             }
         }
         if (registeredServer == null) {
-            VelocityUtils.sendMessageWithPrefix(source, "&c未找到名为 " + hubServerName + " 的服务器！");
+            VelocityUtils.sendMessageWithPrefix(source, "<red>未找到名为 " + hubServerName + " 的服务器！</red>");
             return;
         }
         player.createConnectionRequest(registeredServer).connect();
-        VelocityUtils.sendMessageWithPrefix(source, "&a正在连接到 " + hubServerName + " ...");
+        VelocityUtils.sendMessageWithPrefix(source, "<green>正在连接到 " + hubServerName + " ...</green>");
     }
 
     @Override

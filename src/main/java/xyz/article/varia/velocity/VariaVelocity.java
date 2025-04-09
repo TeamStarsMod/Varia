@@ -8,6 +8,7 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import xyz.article.varia.velocity.commands.AlertCommand;
 import xyz.article.varia.velocity.commands.AllServerChatCommand;
@@ -33,7 +34,7 @@ public class VariaVelocity {
     private final Path dataDirectory;
     private File configFile;
 
-    public static String PREFIX = "&bVaria&fVelocity &7>> ";
+    public static String PREFIX = "<aqua>Varia</aqua><white>Velocity</white> <gray>>> ";
 
     @Inject
     public VariaVelocity(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
@@ -76,6 +77,11 @@ public class VariaVelocity {
             logger.error("读取配置文件时出现了错误！", e);
         }
 
+        // 设置Prefix
+        if (config.get("Prefix")!= null) {
+            PREFIX = (String) config.get("Prefix");
+        }
+
         // 注册监听器
         server.getEventManager().register(this, new PlayerJoinProxyEvent(server));
         server.getEventManager().register(this, new PlayerLeaveProxyEvent(server));
@@ -94,7 +100,7 @@ public class VariaVelocity {
             CommandMeta alertCommandMeta = server.getCommandManager().metaBuilder("alert")
                     .plugin(this)
                     .build();
-            server.getCommandManager().register(alertCommandMeta, new AlertCommand(server, logger));
+            server.getCommandManager().register(alertCommandMeta, new AlertCommand(server));
         }
 
         // 注册Hub命令
@@ -145,9 +151,16 @@ public class VariaVelocity {
             // 递归合并配置
             mergeConfigs(oldConfig, newConfig);
 
+            // 设置YAML输出格式
+            DumperOptions options = new DumperOptions();
+            options.setIndent(2);
+            options.setPrettyFlow(true);
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            Yaml prettyYaml = new Yaml(options);
+
             // 保存配置文件
             try (FileWriter writer = new FileWriter(oldConfigFile)) {
-                yaml.dump(oldConfig, writer);
+                prettyYaml.dump(oldConfig, writer);
             }
             return true;
         } catch (IOException e) {

@@ -3,16 +3,13 @@ package xyz.article.varia.velocity.commands;
 import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import org.slf4j.Logger;
 import xyz.article.varia.velocity.VelocityUtils;
 
 public class AlertCommand implements RawCommand {
     private final ProxyServer server;
-    private final Logger logger;
 
-    public AlertCommand(ProxyServer server, Logger logger) {
+    public AlertCommand(ProxyServer server) {
         this.server = server;
-        this.logger = logger;
     }
 
     @Override
@@ -22,9 +19,9 @@ public class AlertCommand implements RawCommand {
             return;
         }
         for (Player player : server.getAllPlayers()) {
-            player.sendPlainMessage(VelocityUtils.reColor("&f[&cAlert&f] &4" + invocation.arguments()));
+            player.sendMessage(VelocityUtils.reColorMiniMessage("<white>[</white><red>Alert</red><white>]</white> <dark_red>" + invocation.arguments() + "</dark_red>"));
         }
-        logger.info(VelocityUtils.reColor("&f[&cAlert&f] &4" + invocation.arguments()));
+        server.getConsoleCommandSource().sendMessage(VelocityUtils.reColorMiniMessage("<white>[</white><red>Alert</red><white>]</white> <dark_red>" + invocation.arguments() + "</dark_red>"));
     }
 
     @Override
