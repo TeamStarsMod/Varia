@@ -49,7 +49,7 @@ public class CommandRegisterManager {
     public static void registerCommand(Plugin plugin, String command, CommandExecutor executor,
                                        TabCompleter tabCompleter, String... aliases) {
         try {
-            Command wrappedCmd = createCommandWrapper(command, executor, tabCompleter, aliases);
+            Command wrappedCmd = createCommandWrapper(command, executor, tabCompleter);
             registerCommandInternal(plugin, command, wrappedCmd, aliases);
         } catch (Exception e) {
             logger.severe("注册命令 " + command + " 时发生错误: " + e.getMessage());
@@ -69,7 +69,7 @@ public class CommandRegisterManager {
     }
 
     private static Command createCommandWrapper(String command, CommandExecutor executor,
-                                                TabCompleter tabCompleter, String[] aliases) {
+                                                TabCompleter tabCompleter) {
         return new Command(command) {
             @Override
             public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
