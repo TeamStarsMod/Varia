@@ -4,16 +4,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xyz.article.varia.bukkit.commands.report.Report;
 import xyz.article.varia.bukkit.commands.time.Time;
 
-import java.util.Objects;
+import static xyz.article.varia.bukkit.RunningDataBukkit.config;
 
 public class BukkitCommandRegister {
     public static void registerCommands(JavaPlugin plugin) {
-        Objects.requireNonNull(plugin.getCommand("Report")).setExecutor(new Report());
-        Objects.requireNonNull(plugin.getCommand("VariaBukkit")).setExecutor(new VariaBukkitCommand());
-        Objects.requireNonNull(plugin.getCommand("Time")).setExecutor(new Time());
-    }
-
-    public static void registerTabCompleters(JavaPlugin plugin) {
-        Objects.requireNonNull(plugin.getCommand("Report")).setTabCompleter(new Report());
+        if (config.getBoolean("VariaTime")) CommandRegisterManager.registerCommand(plugin, "Time", new Time(), new Time());
+        CommandRegisterManager.registerCommand(plugin, "Report", new Report(), new Report());
+        CommandRegisterManager.registerCommand(plugin, "VariaBukkit", new VariaBukkitCommand(), "vb");
     }
 }

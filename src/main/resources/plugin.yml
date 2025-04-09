@@ -4,18 +4,6 @@ main: xyz.article.varia.bukkit.VariaBukkit
 api-version: '1.20'
 authors: ["NekoEpisode", "Xiaotian1212"]
 
-commands:
-  VariaBukkit:
-    description: VariaBukkit主命令
-    permission: VariaBukkit.VariaBukkit
-    aliases: ["vb"]
-  Report:
-    description: 举报命令
-    permission: VariaBukkit.Report
-  Time:
-    description: 修改时间
-
-
 permissions:
   Varia.VariaBukkit:
     default: true

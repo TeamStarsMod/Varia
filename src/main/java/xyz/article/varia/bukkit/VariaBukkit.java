@@ -13,6 +13,8 @@ import java.nio.file.Files;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static xyz.article.varia.bukkit.RunningDataBukkit.config;
+
 public final class VariaBukkit extends JavaPlugin {
     public static PluginManager pluginManager;
     public static Server server;
@@ -54,12 +56,13 @@ public final class VariaBukkit extends JavaPlugin {
         else
             logger.warning("在检查您的配置文件时出现了些许问题");
 
-        RunningDataBukkit.config = YamlConfiguration.loadConfiguration(new File(dataFolder, "config.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "config.yml"));
+
+        if (config.getString("Prefix") != null) prefix = config.getString("Prefix");
 
         BukkitListenerRegister.registerListeners(pluginManager, plugin);
 
         BukkitCommandRegister.registerCommands(plugin);
-        BukkitCommandRegister.registerTabCompleters(plugin);
 
         logger.info(BukkitUtils.reColor(prefix + "欢迎来到VariaBukkit！"));
         logger.info(BukkitUtils.reColor(prefix + "加载耗时：" + (System.currentTimeMillis() - startTime) + "ms"));

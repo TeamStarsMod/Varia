@@ -2,6 +2,9 @@
 #如果您当前进入的是default_config.yml，那么请转到config.yml，因为您在这里的修改不会被读取且会被覆盖
 #default_config.yml是为了防止配置文件自动更新后丢失注释的，如果您在更新后找不到注释，可以尝试查看default_config.yml来对照
 
+#插件消息前缀
+Prefix: "&bVaria&fBukkit &7>> "
+
 #屏蔽词系统
 #是否开启屏蔽词系统?
 BlockWord: false
@@ -24,3 +27,8 @@ ReportReasons:
   - "作弊"
   - "侮辱"
   - "破坏"
+
+#开启Varia自带的动画Time命令，如果设为关则会不注册
+VariaTime: false
+#动画步长
+TimeStep: 100
