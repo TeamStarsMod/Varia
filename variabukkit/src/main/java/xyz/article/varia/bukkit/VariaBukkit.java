@@ -13,8 +13,6 @@ import java.nio.file.Files;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static xyz.article.varia.bukkit.RunningDataBukkit.config;
-
 public final class VariaBukkit extends JavaPlugin {
     public static PluginManager pluginManager;
     public static Server server;
@@ -56,9 +54,9 @@ public final class VariaBukkit extends JavaPlugin {
         else
             logger.warning("在检查您的配置文件时出现了些许问题");
 
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "config.yml"));
+        RunningDataBukkit.config = YamlConfiguration.loadConfiguration(new File(dataFolder, "config.yml"));
 
-        if (config.getString("Prefix") != null) prefix = config.getString("Prefix");
+        if (RunningDataBukkit.config.getString("Prefix") != null) prefix = RunningDataBukkit.config.getString("Prefix");
 
         BukkitListenerRegister.registerListeners(pluginManager, plugin);
 
