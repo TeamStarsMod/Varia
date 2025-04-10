@@ -3,10 +3,10 @@ package xyz.article.varia.velocity.commands;
 import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.proxy.server.RegisteredServer;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.slf4j.Logger;
+import xyz.article.varia.velocity.RunningDataVelocity;
 import xyz.article.varia.velocity.VelocityUtils;
+import xyz.article.varia.velocity.methods.AllServerChatMethods;
 
 import java.util.List;
 
@@ -29,51 +29,28 @@ public class AllServerChatCommand implements RawCommand {
             return;
         }
 
+        if (invocation.arguments().isEmpty()) {
+            boolean isInList = RunningDataVelocity.allChatModePlayers.contains(player);
+            if (isInList)
+                RunningDataVelocity.allChatModePlayers.remove(player);
+            else
+                RunningDataVelocity.allChatModePlayers.add(player);
+            VelocityUtils.sendMessageWithPrefix(invocation.source(), "<green>已" + (isInList ? "退出" : "进入") + "全服聊天模式</green>");
+            return;
+        }
+
         List<String> blackList = (List<String>) config.get("AllServerChatBlackList");
         if (player.getCurrentServer().isPresent()) {
             if (blackList.contains(player.getCurrentServer().get().getServerInfo().getName())) {
                 VelocityUtils.sendMessageWithPrefix(invocation.source(), "<red>抱歉，您不能在此服务器使用全服聊天！</red>");
                 return;
             }
-        }
-
-        if (invocation.arguments().isEmpty()) {
-            VelocityUtils.sendMessageWithPrefix(invocation.source(), "<red>请输入要发送的消息！</red>");
+        } else {
+            VelocityUtils.sendMessageWithPrefix(invocation.source(), "<red>出错了！</red>");
             return;
         }
 
-        String message = (String) config.get("AllServerChatFormat");
-        if (message == null) {
-            message = "<yellow>[</yellow><gold>全服</gold><yellow>] %player%</yellow> <gold>»</gold><white> %message%</white>";
-            logger.warn("全服聊天格式未配置，已使用默认格式");
-        }
-
-        String playerMessage;
-        if ((boolean) config.get("AllServerChatDisableMiniMessage")) {
-            if (invocation.source().hasPermission("varia.useMiniMessage"))
-                playerMessage = invocation.arguments();
-            else
-                playerMessage = MiniMessage.miniMessage().escapeTags(invocation.arguments());
-        } else {
-            playerMessage = invocation.arguments();
-        }
-
-        message = message
-                .replace("%player%", player.getUsername())
-                .replace("%message%", playerMessage)
-                .replace("%server%", (player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo().getName() : "Unknown"));
-
-        for (RegisteredServer server : proxyServer.getAllServers()) {
-            if (blackList.contains(server.getServerInfo().getName())) {
-                continue;
-            }
-
-            for (Player player1 : server.getPlayersConnected()) {
-                player1.sendMessage(VelocityUtils.reColorMiniMessage(message));
-            }
-        }
-
-        proxyServer.getConsoleCommandSource().sendMessage(VelocityUtils.reColorMiniMessage(message));
+        AllServerChatMethods.sendMessage(invocation.arguments(), proxyServer, logger, blackList, player);
     }
 
     @Override

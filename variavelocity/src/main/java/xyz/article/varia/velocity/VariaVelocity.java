@@ -14,6 +14,7 @@ import xyz.article.varia.velocity.commands.AlertCommand;
 import xyz.article.varia.velocity.commands.AllServerChatCommand;
 import xyz.article.varia.velocity.commands.HubCommand;
 import xyz.article.varia.velocity.commands.VariaVelocityCommand;
+import xyz.article.varia.velocity.listener.PlayerChatEvent;
 import xyz.article.varia.velocity.listener.connectionEvents.PlayerJoinProxyEvent;
 import xyz.article.varia.velocity.listener.connectionEvents.PlayerLeaveProxyEvent;
 import xyz.article.varia.velocity.listener.connectionEvents.PlayerSwitchServerEvent;
@@ -87,6 +88,7 @@ public class VariaVelocity {
         server.getEventManager().register(this, new PlayerLeaveProxyEvent(server));
         server.getEventManager().register(this, new PlayerSwitchServerEvent(server));
         server.getEventManager().register(this, new ProxyPingEvent(server));
+        server.getEventManager().register(this, new PlayerChatEvent(server, logger));
 
         // 注册主命令
         CommandMeta commandMeta = server.getCommandManager().metaBuilder("variavelocity")
