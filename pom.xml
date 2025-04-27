@@ -6,7 +6,7 @@
 
     <groupId>xyz.article</groupId>
     <artifactId>varia</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>b0.1</version>
     <packaging>pom</packaging>
 
     <name>varia</name>

@@ -77,4 +77,8 @@ CustomSample:
 #  Sample2:
 #    - "&c这是第二个"
 #    - "&f自定义Sample!"
-MotdDescription: "这是一个自定义\nMotdDescription!" #Description(服务器描述)显示的内容，设为null保持原样，可使用\n换行
+MotdDescription: "<yellow>这是一个自定义</yellow>\n<red>Motd</red><aqua>Description!</aqua>" #Description(服务器描述)显示的内容，设为null保持原样，可使用\n换行
+#你也可以配置为列表，插件会在每次请求时随机返回这些Description中随机一个
+#MotdDescription:
+#  - "Description1"
+#  - "Description2"

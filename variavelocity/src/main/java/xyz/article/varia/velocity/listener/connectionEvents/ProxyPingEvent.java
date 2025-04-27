@@ -14,6 +14,7 @@ import static xyz.article.varia.velocity.RunningDataVelocity.config;
 
 public class ProxyPingEvent {
     private final ProxyServer server;
+    private static final Random RANDOM = new Random();
 
     public ProxyPingEvent(ProxyServer server) {
         this.server = server;
@@ -38,10 +39,12 @@ public class ProxyPingEvent {
             List<ServerPing.SamplePlayer> samplePlayerList = new ArrayList<>();
             if ((boolean) config.get("RealSample")) {
                 int maxLength = (int) config.get("MaxSampleLength");
-                for (int i = 0; i < server.getAllPlayers().size(); i++) {
-                    if (i >= maxLength) break;
-                    Player player = server.getAllPlayers().stream().toList().get(i);
-                    if ((!((boolean) config.get("ForceShowPlayers"))) && (player.getPlayerSettings().isClientListingAllowed())) {
+                List<Player> allPlayers = new ArrayList<>(server.getAllPlayers());
+                boolean forceShow = (boolean) config.get("ForceShowPlayers");
+
+                for (int i = 0; i < Math.min(allPlayers.size(), maxLength); i++) {
+                    Player player = allPlayers.get(i);
+                    if (forceShow || player.getPlayerSettings().isClientListingAllowed()) {
                         samplePlayerList.add(new ServerPing.SamplePlayer(
                                 player.getUsername(),
                                 player.getUniqueId()
@@ -61,8 +64,8 @@ public class ProxyPingEvent {
             }
 
             players = new ServerPing.Players(
-                    (event.getPing().getPlayers().isPresent() ? event.getPing().getPlayers().get().getOnline() : -1),
-                    (event.getPing().getPlayers().isPresent() ? event.getPing().getPlayers().get().getMax() : -1),
+                    (event.getPing().getPlayers().isPresent() ? event.getPing().getPlayers().get().getOnline() : 0),
+                    (event.getPing().getPlayers().isPresent() ? event.getPing().getPlayers().get().getMax() : 0),
                     samplePlayerList
             );
         } else {
@@ -70,7 +73,13 @@ public class ProxyPingEvent {
         }
 
         if (config.get("MotdDescription") != null) {
-            description = VelocityUtils.reColorMiniMessage((String) config.get("MotdDescription"));
+            if (config.get("MotdDescription") instanceof String descriptionStr) {
+                description = VelocityUtils.reColorMiniMessage(descriptionStr);
+            } else if (config.get("MotdDescription") instanceof List<?> descriptionList) {
+                description = VelocityUtils.reColorMiniMessage(descriptionList.get(RANDOM.nextInt(descriptionList.size())).toString());
+            } else {
+                description = event.getPing().getDescriptionComponent();
+            }
         } else {
             description = event.getPing().getDescriptionComponent();
         }

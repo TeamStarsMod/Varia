@@ -28,7 +28,7 @@ import java.util.Map;
 
 import static xyz.article.varia.velocity.RunningDataVelocity.config;
 
-@Plugin(id = "varia", name = "VariaVelocity", version = "1.0-SNAPSHOT", description = "Add more features to the server", authors = {"NekoEpisode"})
+@Plugin(id = "varia", name = "VariaVelocity", version = "b0.1", description = "Add more features to the server", authors = {"NekoEpisode"})
 public class VariaVelocity {
     private final ProxyServer server;
     private final Logger logger;
